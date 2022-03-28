@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+//todo:module20
+
+import React, { useState, useEffect } from "react";
 import { isEmpty, size } from "lodash";
 import shortid from "shortid";
+import { getCollection } from "./actions";
 function App() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [id, setId] = useState("");
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const result = await getCollection("task");
+      console.log(result);
+    })();
+  }, []);
+
   const validForm = () => {
     let isValid = true;
     setError(null);
@@ -18,10 +29,10 @@ function App() {
   };
   //validacion del campo y campo en blanco
   //creacion de nuevas tareas
+
   const addTask = (e) => {
     e.preventDefault();
     if (isEmpty(task)) {
-      console.log("task is empty");
       return;
     }
     const newTask = {
